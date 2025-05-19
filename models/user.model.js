@@ -1,10 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define("user", {
-    email: { type: DataTypes.STRING, unique: true },
-    password: DataTypes.STRING,
-    tipo: { type: DataTypes.ENUM("normal", "admin"), defaultValue: "normal" },
-    bloqueado: { type: DataTypes.BOOLEAN, defaultValue: false },
-    saldo: { type: DataTypes.FLOAT, defaultValue: 0 },
-    cuenta: { type: DataTypes.STRING(5), unique: true }
-  });
+  return sequelize.define('user', {
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    password: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false },
+    failedAttempts: { type: DataTypes.INTEGER, defaultValue: 0 }
+  },{ createdAt: false, updatedAt: false });
 };
