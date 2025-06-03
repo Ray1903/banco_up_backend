@@ -12,7 +12,7 @@ app.use(express.json());
 
 db.sequelize.sync();
 
-app.use('/api', routes);
+app.use('', routes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

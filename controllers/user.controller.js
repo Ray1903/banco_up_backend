@@ -1,8 +1,9 @@
 const db = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { INTEGER } = require('sequelize');
 
-// 🔐 Iniciar sesión
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -13,7 +14,23 @@ exports.login = async (req, res) => {
     if (usuario.bloqueado) return res.status(403).json({ message: "Usuario bloqueado" });
 
     const passwordValid = await bcrypt.compare(password, usuario.password);
-    if (!passwordValid) return res.status(401).json({ message: "Contraseña incorrecta" });
+    if (!passwordValid) 
+    {
+      const nuevos_intentos = (usuario.failedAttempts || 0) + 1;
+      const bloqueado = nuevos_intentos >= 3;
+
+      await usuario.update({
+        failedAttempts: nuevos_intentos,
+        bloqueado
+      });
+
+      const msg = bloqueado ? "Usuario bloqueado por múltiples intentos fallidos" : "Contraseña incorrecta";
+      const status = bloqueado ? 403:401
+  
+      return res.status(status).json({message:msg});
+    };
+
+    usuario.update({failedAttempts : 0});
 
     const token = jwt.sign(
       { id: usuario.id, tipo: usuario.type },
@@ -21,61 +38,108 @@ exports.login = async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    res.json({ token });
+    res.json({ token:token,
+      usuario:usuario.id,
+      correo:usuario.email,   
+     });
+
   } catch (error) {
     console.error("Error en login:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 };
 
-// 👤 Obtener perfil (datos del usuario)
+
+exports.insertUser = async (req, res) => {
+  try {
+    const { email, password, type } = req.body;
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,10}$/;
+    const normalizedEmail = email.toLowerCase()
+
+    if(!passwordRegex.test(password)){
+      return res.status(400).json(
+        {
+          message:"La contraseña debe de ser de 8 - 10 caracteres, e incluir mayúsculas, minúsculas, números y caracteres especiales."
+        }
+      );
+    }
+  
+    const existingUser = await db.User.findOne({ where: {email:normalizedEmail } });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'El usuario ya existe' });
+    }
+
+ 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    
+    const newUser = await db.User.create({
+      email: normalizedEmail,
+      password: hashedPassword,
+      type,
+      failedAttempts: 0
+    });
+
+    const { password: _, ...userSafe } = newUser.get({ plain: true });
+    return res.status(201).json({ message: 'Usuario creado correctamente', user: userSafe })
+  } catch (error) {
+    console.error('Error al insertar usuario:', error);
+    return res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+
+
 exports.getProfile = async (req, res) => {
   try {
-    const usuario = await db.User.findByPk(req.usuario.id, {
-      attributes: ['id', 'email', 'type', 'failedAttempts']
-    });
+    const {id} = req.body
+    const usuario = await db.User.findOne({where:{id}});
 
     if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    res.json(usuario);
+    res.json({id:usuario.id, email:usuario.email});
   } catch (error) {
     console.error("Error al obtener perfil:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 };
 
-// 💰 Ver saldo de cuenta
-exports.getBalance = async (req, res) => {
+
+exports.getUsersByBlockedStatus = async (req, res) => {
   try {
-    const account = await db.Account.findOne({ where: { userID: req.usuario.id } });
-    if (!account) return res.status(404).json({ message: "Cuenta no encontrada" });
+    const { blocked } = req.query;
 
-    res.json({ balance: account.balance });
-  } catch (error) {
-    console.error("Error al obtener balance:", error);
-    res.status(500).json({ message: "Error del servidor" });
-  }
-};
+    const whereCondition = {};
+    if (blocked !== undefined) {
+      if (blocked !== '0' && blocked !== '1') {
+        return res.status(400).json({ message: "Parámetro 'blocked' debe ser '0' o '1'." });
+      }
+      whereCondition.blocked = blocked === '1';
+    }
 
-// 📜 Ver historial de transferencias
-exports.getHistorial = async (req, res) => {
-  try {
-    const account = await db.Account.findOne({ where: { userID: req.usuario.id } });
-    if (!account) return res.status(404).json({ message: "Cuenta no encontrada" });
-
-    const transfers = await db.Transaction.findAll({
-      where: {
-        [db.Sequelize.Op.or]: [
-          { senderID: account.id },
-          { receiverID: account.id }
-        ]
-      },
-      order: [['date', 'DESC']]
+    const usuarios = await db.User.findAll({
+      where: whereCondition,
+      attributes: ['id', 'email', 'blocked', 'failedAttempts', 'type'],
+      include: [
+        {
+          model: db.Account,
+          attributes: ['id', 'balance']
+        }
+      ]
     });
 
-    res.json(transfers);
+    res.json({ usuarios });
   } catch (error) {
-    console.error("Error al obtener historial:", error);
+    console.error("Error al obtener usuarios:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 };
+
+
+
+
+
+
+

@@ -6,5 +6,5 @@ module.exports = (sequelize, DataTypes) => {
     observations: { type: DataTypes.STRING },
     date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     concept: { type: DataTypes.STRING }
-  }, { createdAt: false, updatedAt: false });
+  }, { createdAt: false, updatedAt: false, freezeTableName: true});
 };
