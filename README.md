@@ -136,7 +136,7 @@ Devuelve todos los usuarios que están bloqueados. Puedes usar `blocked=0` para 
 
 Bloquea manualmente a un usuario (por ejemplo, desde un panel de admin).
 
-**Requiere token en el header**.
+
 
 **URL Params:**
 - `:id` → ID del usuario a bloquear
@@ -151,6 +151,31 @@ Authorization: Bearer JWT_TOKEN
 ```json
 {
   "message": "Usuario bloqueado exitosamente."
+}
+```
+
+
+## ✅ Desbloquear usuario manualmente
+
+### PATCH `/user/unlock/:id`
+
+Desbloquea manualmente a un usuario (reinicia intentos fallidos y quita el estado de bloqueo).
+
+**Requiere token en el header**.
+
+**URL Params:**
+- `:id` → ID del usuario a desbloquear
+
+**Ejemplo de request:**
+```
+PATCH /user/unlock/3
+Authorization: Bearer JWT_TOKEN
+```
+
+**Response:**
+```json
+{
+  "message": "Usuario desbloqueado exitosamente"
 }
 ```
 ¿Dudas? Pegúenle al backend 😎
