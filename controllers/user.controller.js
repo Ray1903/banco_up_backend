@@ -98,7 +98,7 @@ exports.getProfile = async (req, res) => {
     const id = req.usuario.id; // ← Esto viene del middleware JWT
     const usuario = await db.User.findOne({
       where: { id },
-      include: [{ model: db.Account }]
+      include: [{ model: db.Account, as: 'account'}] // ← Incluimos la cuenta del usuario
     });
 
     if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
@@ -106,7 +106,7 @@ exports.getProfile = async (req, res) => {
     res.json({
       id: usuario.id,
       email: usuario.email,
-      account: usuario.Account // ← Agregamos esto para que tengas acceso a su balance e ID de cuenta
+      account: usuario.account // ← Agregamos esto para que tengas acceso a su balance e ID de cuenta
     });
   } catch (error) {
     console.error("Error al obtener perfil:", error);
