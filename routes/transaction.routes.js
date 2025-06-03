@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const transferController = require('../controllers/transaction.controller')
-// Aquí irían los endpoints de transferencia
+const transactionController = require('../controllers/transaction.controller')
 
-router.post('/', transferController.transfer)
+
+router.post('/', transactionController.transfer)
+router.get('/account/:accountId', transactionController.getTransactionsByAccount);
 
 module.exports = router;

@@ -69,7 +69,7 @@ const receivedToday = await db.TotalSentPerDay.sum('amount', {
 
       await db.Transaction.create({
         senderID: sender.id,
-        recipientId: recipient.id,
+        receiverID: recipient.id,
         amount,
         concept,
         status: 'completed',
@@ -81,5 +81,26 @@ const receivedToday = await db.TotalSentPerDay.sum('amount', {
   } catch (error) {
     console.error('Error al realizar la transferencia:', error);
     return res.status(500).json({ message: 'Error en el servidor al realizar la transferencia.' });
+  }
+};
+
+exports.getTransactionsByAccount = async (req, res) => {
+  try {
+    const { accountId } = req.params;
+
+    const transactions = await db.Transaction.findAll({
+      where: {
+        [Op.or]: [
+          { senderID: accountId },
+          { receiverID: accountId }
+        ]
+      },
+      order: [['date', 'DESC']]
+    });
+
+    return res.status(200).json(transactions);
+  } catch (error) {
+    console.error('Error al obtener transacciones:', error);
+    return res.status(500).json({ message: 'Error del servidor al obtener transacciones.' });
   }
 };
