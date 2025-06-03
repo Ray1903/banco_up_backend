@@ -109,5 +109,48 @@ Lista todas las transferencias donde el ID fue emisor o receptor.
 - `400 Fondos insuficientes`: El emisor no tiene suficiente saldo.
 
 ---
+## 🔒 Bloqueo de usuarios
 
+### ¿Cómo funciona?
+
+- Un usuario será **bloqueado automáticamente** después de **3 intentos fallidos de inicio de sesión**.
+- Mientras esté bloqueado, cualquier intento de login devolverá:
+  ```json
+  {
+    "message": "Usuario bloqueado"
+  }
+  ```
+  con status `403`.
+
+---
+
+### GET `/user/users?blocked=1`
+
+Devuelve todos los usuarios que están bloqueados. Puedes usar `blocked=0` para obtener los usuarios que **no están bloqueados**.
+
+---
+
+## 🛑 Bloquear usuario manualmente
+
+### PATCH `/user/block/:id`
+
+Bloquea manualmente a un usuario (por ejemplo, desde un panel de admin).
+
+**Requiere token en el header**.
+
+**URL Params:**
+- `:id` → ID del usuario a bloquear
+
+**Ejemplo de request:**
+```
+PATCH /user/block/3
+Authorization: Bearer JWT_TOKEN
+```
+
+**Response:**
+```json
+{
+  "message": "Usuario bloqueado exitosamente."
+}
+```
 ¿Dudas? Pegúenle al backend 😎
