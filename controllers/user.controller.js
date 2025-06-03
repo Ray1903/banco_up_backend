@@ -14,8 +14,7 @@ exports.login = async (req, res) => {
     if (usuario.bloqueado) return res.status(403).json({ message: "Usuario bloqueado" });
 
     const passwordValid = await bcrypt.compare(password, usuario.password);
-    if (!passwordValid) 
-    {
+    if (!passwordValid) {
       const nuevos_intentos = (usuario.failedAttempts || 0) + 1;
       const bloqueado = nuevos_intentos >= 3;
 
@@ -25,12 +24,12 @@ exports.login = async (req, res) => {
       });
 
       const msg = bloqueado ? "Usuario bloqueado por múltiples intentos fallidos" : "Contraseña incorrecta";
-      const status = bloqueado ? 403:401
-  
-      return res.status(status).json({message:msg});
+      const status = bloqueado ? 403 : 401
+
+      return res.status(status).json({ message: msg });
     };
 
-    usuario.update({failedAttempts : 0});
+    usuario.update({ failedAttempts: 0 });
 
     const token = jwt.sign(
       { id: usuario.id, tipo: usuario.type },
@@ -38,10 +37,11 @@ exports.login = async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    res.json({ token:token,
-      usuario:usuario.id,
-      correo:usuario.email,   
-     });
+    res.json({
+      token: token,
+      usuario: usuario.id,
+      correo: usuario.email,
+    });
 
   } catch (error) {
     console.error("Error en login:", error);
@@ -57,24 +57,24 @@ exports.insertUser = async (req, res) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,10}$/;
     const normalizedEmail = email.toLowerCase()
 
-    if(!passwordRegex.test(password)){
+    if (!passwordRegex.test(password)) {
       return res.status(400).json(
         {
-          message:"La contraseña debe de ser de 8 - 10 caracteres, e incluir mayúsculas, minúsculas, números y caracteres especiales."
+          message: "La contraseña debe de ser de 8 - 10 caracteres, e incluir mayúsculas, minúsculas, números y caracteres especiales."
         }
       );
     }
-  
-    const existingUser = await db.User.findOne({ where: {email:normalizedEmail } });
+
+    const existingUser = await db.User.findOne({ where: { email: normalizedEmail } });
 
     if (existingUser) {
       return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
- 
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    
+
     const newUser = await db.User.create({
       email: normalizedEmail,
       password: hashedPassword,
@@ -92,19 +92,28 @@ exports.insertUser = async (req, res) => {
 
 
 
+// ✔ usa el ID del token directamente
 exports.getProfile = async (req, res) => {
   try {
-    const {id} = req.body
-    const usuario = await db.User.findOne({where:{id}});
+    const id = req.usuario.id; // ← Esto viene del middleware JWT
+    const usuario = await db.User.findOne({
+      where: { id },
+      include: [{ model: db.Account }]
+    });
 
     if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    res.json({id:usuario.id, email:usuario.email});
+    res.json({
+      id: usuario.id,
+      email: usuario.email,
+      account: usuario.Account // ← Agregamos esto para que tengas acceso a su balance e ID de cuenta
+    });
   } catch (error) {
     console.error("Error al obtener perfil:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 };
+
 
 
 exports.getUsersByBlockedStatus = async (req, res) => {
@@ -125,7 +134,8 @@ exports.getUsersByBlockedStatus = async (req, res) => {
       include: [
         {
           model: db.Account,
-          attributes: ['id', 'balance']
+          as: 'account',            // ← Aquí debe coincidir EXACTO con el alias de models/index.js
+          attributes: ['id', 'balance', 'active']
         }
       ]
     });
@@ -135,6 +145,24 @@ exports.getUsersByBlockedStatus = async (req, res) => {
     console.error("Error al obtener usuarios:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
+};
+
+exports.activateAccount = async (req, res) => {
+  const { userID } = req.body;
+  const account = await db.Account.findOne({ where: { userID } });
+  if (!account) return res.status(404).json({ message: 'Cuenta no encontrada' });
+
+  await account.update({ active: true });
+  res.json({ message: 'Cuenta activada' });
+};
+
+exports.deactivateAccount = async (req, res) => {
+  const { userID } = req.body;
+  const account = await db.Account.findOne({ where: { userID } });
+  if (!account) return res.status(404).json({ message: 'Cuenta no encontrada' });
+
+  await account.update({ active: false });
+  res.json({ message: 'Cuenta desactivada' });
 };
 
 

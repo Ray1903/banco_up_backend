@@ -25,8 +25,8 @@ db.TotalReceivedPerDay = require("./totalReceivedPerDay.model")(sequelize, Seque
 // Relaciones
 
 // Un usuario tiene una cuenta
-db.User.hasOne(db.Account, { foreignKey: "userID", onDelete: 'CASCADE' });
-db.Account.belongsTo(db.User, { foreignKey: "userID" });
+db.User.hasOne(db.Account, { foreignKey: "userID", onDelete: 'CASCADE', as: 'account' });
+db.Account.belongsTo(db.User, { foreignKey: "userID", as: 'user' });
 
 // Una cuenta puede enviar muchas transferencias
 db.Account.hasMany(db.Transaction, { foreignKey: "senderID", as: "enviadas" });
