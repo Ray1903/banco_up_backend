@@ -161,7 +161,7 @@ Authorization: Bearer JWT_TOKEN
 
 Desbloquea manualmente a un usuario (reinicia intentos fallidos y quita el estado de bloqueo).
 
-**Requiere token en el header**.
+
 
 **URL Params:**
 - `:id` → ID del usuario a desbloquear
