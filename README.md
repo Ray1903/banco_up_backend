@@ -178,4 +178,6 @@ Authorization: Bearer JWT_TOKEN
   "message": "Usuario desbloqueado exitosamente"
 }
 ```
-¿Dudas? Pegúenle al backend 😎
+¿
+
+Dudas? Pegúenle al backend 😎
