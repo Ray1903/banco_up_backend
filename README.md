@@ -67,6 +67,7 @@ Retorna los datos del perfil del usuario.
 ### GET `/user/users?blocked=1`
 
 Devuelve usuarios filtrando por estado de bloqueo (`blocked=0` o `1`).
+Undifined devuelve todo los usuarios
 
 ---
 
