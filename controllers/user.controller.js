@@ -138,8 +138,37 @@ exports.getUsersByBlockedStatus = async (req, res) => {
 };
 
 
+exports.unlockUser = async (req, res) => {
+  try {
+    const { id } = req.body;
 
+    const usuario = await db.User.findByPk(id);
+    if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
 
+    await usuario.update({ blocked: false, failedAttempts: 0 });
+
+    res.status(200).json({ message: "Usuario desbloqueado exitosamente" });
+  } catch (error) {
+    console.error("Error al desbloquear usuario:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
+
+exports.blockUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const usuario = await db.User.findByPk(id);
+    if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    await usuario.update({ blocked: true, failedAttempts: 3 });
+
+    res.json({ message: "Usuario bloqueado exitosamente." });
+  } catch (error) {
+    console.error("Error al bloquear usuario:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
 
 
 
