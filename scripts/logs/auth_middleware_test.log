@@ -1,0 +1,3 @@
+[2025-06-04T16:07:00.156Z] VALID TOKEN → usuario: {"id":1,"tipo":"normal"} status: 200
+[2025-06-04T16:07:00.163Z] NO TOKEN → status: 401 response: {"message":"Token no proporcionado"}
+[2025-06-04T16:07:00.172Z] INVALID TOKEN → status: 403 response: {"message":"Token inválido o expirado"}
