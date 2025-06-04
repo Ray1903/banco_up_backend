@@ -1,61 +1,90 @@
+# BancoUP Backend API Documentation
 
-# 📡 BancoUP API - Guía para Frontend
+## ✨ Overview
 
-Esta API gestiona usuarios, autenticación, cuentas y transferencias. Se encuentra corriendo en el puerto `3000`.
-
----
-
-## 🔐 Autenticación
-
-### POST `/user/login`
-
-**Body:**
-```json
-{
-  "email": "usuario@correo.com",
-  "password": "Contraseña123!"
-}
-```
-
-**Response:**
-```json
-{
-  "token": "JWT_TOKEN",
-  "usuario": 1,
-  "correo": "usuario@correo.com"
-}
-```
-
-🔑 Guarda el token para incluirlo en los headers de las siguientes peticiones:
-
-```
-Authorization: Bearer JWT_TOKEN
-```
+BancoUP is a backend system for managing users, accounts, and transactions securely and efficiently. Built with Node.js and MySQL via Sequelize ORM.
 
 ---
 
-## 👤 Usuario
+## ⚙️ Technologies
 
-### POST `/user/insert`
-
-Registra un nuevo usuario.
-
-**Body:**
-```json
-{
-  "email": "nuevo@correo.com",
-  "password": "ContrasenaSegura1!",
-  "type": "cliente"
-}
-```
+* **Node.js** (Express framework)
+* **MySQL** (with Sequelize ORM)
+* **JWT** for user authentication
+* **bcrypt** for password encryption
+* **RESTful** API structure
 
 ---
 
-### GET `/user/profile`
+## 🔐 Authentication
 
-Retorna los datos del perfil del usuario.
+### `POST /user/login`
 
-**Body:**
+Authenticates a user.
+
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+**Responses:**
+
+* `200 OK`: Returns JWT token and user info.
+* `401 Unauthorized`: Invalid credentials.
+* `403 Forbidden`: User is blocked.
+
+### JWT Middleware: `auth.middleware.js`
+
+Validates Bearer token. Injects user data (`req.usuario`).
+
+---
+
+## 👤 User Endpoints
+
+### `POST /user/insert`
+
+Creates a new user.
+
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePass123!",
+  "type": "normal"
+}
+```
+
+### `GET /user/profile` *(Auth required)*
+
+Returns authenticated user profile and account info.
+
+### `GET /user/users?blocked=0|1`
+
+Lists users filtered by blocked status.
+
+### `POST /user/unlock`
+
+Unlocks a specific user.
+
+**Request Body:**
+
+```json
+{
+  "id": 1
+}
+```
+
+### `POST /user/block`
+
+Blocks a specific user.
+
+**Request Body:**
+
 ```json
 {
   "id": 1
@@ -64,120 +93,110 @@ Retorna los datos del perfil del usuario.
 
 ---
 
-### GET `/user/users?blocked=1`
+## 💳 Account Endpoints
 
-Devuelve usuarios filtrando por estado de bloqueo (`blocked=0` o `1`).
-Undifined devuelve todo los usuarios
+### `POST /account/create`
 
----
+Creates a bank account for authenticated user.
 
-## 💸 Transferencias
+**Request Body:**
 
-### POST `/transaction/`
-
-Realiza una transferencia.
-
-**Body:**
 ```json
 {
-  "senderId": 1,
-  "recipientAccountNumber": 2,
-  "amount": 1500,
-  "concept": "Pago de servicios"
+  "userID": 1
 }
 ```
 
-**Restricciones:**
-- Monto mínimo: $500
-- Monto máximo: $10,000
-- Límite diario por cuenta: $10,000
-- Saldo máximo del receptor: $50,000
+### `POST /account/activate`
 
----
+Activates an account by `accountID`.
 
-### GET `/transaction/account/:accountId`
+**Request Body:**
 
-Lista todas las transferencias donde el ID fue emisor o receptor.
-
----
-
-## ⚠️ Errores comunes
-
-- `403 Usuario bloqueado`: Más de 3 intentos fallidos de login.
-- `400 Contraseña inválida`: No cumple con el formato requerido.
-- `400 Límite diario excedido`: Se intentó transferir más de lo permitido por día.
-- `400 Fondos insuficientes`: El emisor no tiene suficiente saldo.
-
----
-## 🔒 Bloqueo de usuarios
-
-### ¿Cómo funciona?
-
-- Un usuario será **bloqueado automáticamente** después de **3 intentos fallidos de inicio de sesión**.
-- Mientras esté bloqueado, cualquier intento de login devolverá:
-  ```json
-  {
-    "message": "Usuario bloqueado"
-  }
-  ```
-  con status `403`.
-
----
-
-### GET `/user/users?blocked=1`
-
-Devuelve todos los usuarios que están bloqueados. Puedes usar `blocked=0` para obtener los usuarios que **no están bloqueados**.
-
----
-
-## 🛑 Bloquear usuario manualmente
-
-### PATCH `/user/block/:id`
-
-Bloquea manualmente a un usuario (por ejemplo, desde un panel de admin).
-
-
-
-**URL Params:**
-- `:id` → ID del usuario a bloquear
-
-**Ejemplo de request:**
-```
-PATCH /user/block/3
-Authorization: Bearer JWT_TOKEN
-```
-
-**Response:**
 ```json
 {
-  "message": "Usuario bloqueado exitosamente."
+  "accountID": 10001
 }
 ```
 
+### `POST /account/deactivate`
 
-## ✅ Desbloquear usuario manualmente
+Deactivates an account by `accountID`.
 
-### PATCH `/user/unlock/:id`
+**Request Body:**
 
-Desbloquea manualmente a un usuario (reinicia intentos fallidos y quita el estado de bloqueo).
-
-
-
-**URL Params:**
-- `:id` → ID del usuario a desbloquear
-
-**Ejemplo de request:**
-```
-PATCH /user/unlock/3
-Authorization: Bearer JWT_TOKEN
-```
-
-**Response:**
 ```json
 {
-  "message": "Usuario desbloqueado exitosamente"
+  "accountID": 10001
 }
 ```
-¿
 
-Dudas? Pegúenle al backend 😎
+---
+
+## 💸 Transaction Endpoints
+
+### `POST /transaction/`
+
+Transfers funds between accounts.
+
+**Request Body:**
+
+```json
+{
+  "senderId": 10001,
+  "recipientAccountNumber": 10002,
+  "amount": 500,
+  "concept": "Payment"
+}
+```
+
+**Validations:**
+
+* Amount: \$500 – \$10,000
+* Cannot transfer to self
+* Daily limit: \$10,000
+* Max balance: \$50,000
+
+### `GET /transaction/account/:accountId`
+
+Retrieves all transactions involving the given account.
+
+---
+
+## 🗃️ Database Schema
+
+### Tables
+
+* **user**: id, email, password, type, failedAttempts, blocked
+* **account**: id, userID, balance, active
+* **transaction**: id, senderID, receiverID, amount, status, concept, date
+* **totalsentperday** / **totalreceivedperday**: Daily tracking per account
+
+### Scheduled Events
+
+* `totalsentperday_event`
+* `totalreceivedperday_event`
+
+---
+
+## ⚒️ Project Setup
+
+### Environment Variables
+
+* `PORT`: App port (default 3000)
+* `JWT_SECRET`: Secret key for signing JWT
+
+### Entry Point
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## 🔐 Security
+
+* JWT protects sensitive endpoints
+* Passwords hashed with bcrypt
+* Account operations are protected with auth middleware

@@ -3,7 +3,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { INTEGER } = require('sequelize');
 
-
+/**
+ * Authenticates a user and returns a JWT if credentials are valid.
+ * Locks the account after 3 failed attempts.
+ * @route POST /user/login
+ * @param {string} email - User's email.
+ * @param {string} password - User's password.
+ * @returns {Object} JWT and user info or error message.
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,6 +57,16 @@ exports.login = async (req, res) => {
 };
 
 
+
+
+/**
+ * Registers a new user with password validation.
+ * @route POST /user/insert
+ * @param {string} email - Email address.
+ * @param {string} password - User password.
+ * @param {string} type - User type (e.g., 'admin', 'normal').
+ * @returns {Object} Created user data or error.
+ */
 exports.insertUser = async (req, res) => {
   try {
     const { email, password, type } = req.body;
@@ -92,13 +109,17 @@ exports.insertUser = async (req, res) => {
 
 
 
-// ✔ usa el ID del token directamente
+/**
+ * Retrieves the profile of the authenticated user, including their account.
+ * @route GET /user/profile
+ * @returns {Object} User profile with account info.
+ */
 exports.getProfile = async (req, res) => {
   try {
-    const id = req.usuario.id; // ← Esto viene del middleware JWT
+    const id = req.usuario.id; 
     const usuario = await db.User.findOne({
       where: { id },
-      include: [{ model: db.Account, as: 'account'}] // ← Incluimos la cuenta del usuario
+      include: [{ model: db.Account, as: 'account'}] 
     });
 
     if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
@@ -106,7 +127,7 @@ exports.getProfile = async (req, res) => {
     res.json({
       id: usuario.id,
       email: usuario.email,
-      account: usuario.account // ← Agregamos esto para que tengas acceso a su balance e ID de cuenta
+      account: usuario.account 
     });
   } catch (error) {
     console.error("Error al obtener perfil:", error);
@@ -115,7 +136,11 @@ exports.getProfile = async (req, res) => {
 };
 
 
-
+/**
+ * Retrieves a list of users based on blocked status.
+ * @route GET /user/users?blocked=0|1
+ * @returns {Array} List of users with account details.
+ */
 exports.getUsersByBlockedStatus = async (req, res) => {
   try {
     const { blocked } = req.query;
@@ -165,7 +190,12 @@ exports.deactivateAccount = async (req, res) => {
   res.json({ message: 'Cuenta desactivada' });
 };
 
-
+/**
+ * Unlocks a user and resets their failed attempts count.
+ * @route POST /user/unlock
+ * @param {number} id - ID of the user to unlock.
+ * @returns {Object} Success or error message.
+ */
 exports.unlockUser = async (req, res) => {
   try {
     const { id } = req.body;
@@ -182,6 +212,13 @@ exports.unlockUser = async (req, res) => {
   }
 };
 
+
+/**
+ * Manually blocks a user and sets failed attempts to 3.
+ * @route POST /user/block
+ * @param {number} id - ID of the user to block.
+ * @returns {Object} Success or error message.
+ */
 exports.blockUser = async (req, res) => {
   try {
     const { id } = req.body;
@@ -197,6 +234,5 @@ exports.blockUser = async (req, res) => {
     res.status(500).json({ message: "Error del servidor" });
   }
 };
-
 
 
