@@ -1,0 +1,36 @@
+[2025-06-04T15:45:27.162Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T15:45:27.166Z] TRANSFER (misma cuenta) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T15:45:27.168Z] TRANSFER (fondos insuficientes) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T15:45:27.229Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T15:47:28.145Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T15:47:28.150Z] TRANSFER (misma cuenta) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T15:47:28.152Z] TRANSFER (fondos insuficientes) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T15:47:28.178Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T15:47:46.178Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T15:47:46.184Z] TRANSFER (misma cuenta) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T15:47:46.186Z] TRANSFER (fondos insuficientes) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T15:47:46.209Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T15:55:32.557Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T15:55:32.559Z] TRANSFER (same account) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T15:55:32.560Z] TRANSFER (insufficient funds) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T15:55:32.577Z] TRANSFER (success) → 200 {"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"2025-06-04T09:55:32.562Z"}{"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"04/06/2025, 09:55:32 a.m."}
+[2025-06-04T15:55:32.577Z] ⚠️ Error al parsear JSON en transferencia exitosa: Unexpected non-whitespace character after JSON at position 115
+[2025-06-04T15:55:32.578Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T16:00:14.848Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T16:00:14.851Z] TRANSFER (same account) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T16:00:14.852Z] TRANSFER (insufficient funds) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T16:00:14.870Z] TRANSFER (success) → 200 {"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"2025-06-04T10:00:14.854Z"}{"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"04/06/2025, 10:00:14 a.m."}
+[2025-06-04T16:00:14.870Z] ⚠️ Error al parsear JSON en transferencia exitosa: Unexpected non-whitespace character after JSON at position 115
+[2025-06-04T16:00:14.871Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T16:00:38.564Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T16:00:38.566Z] TRANSFER (same account) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T16:00:38.568Z] TRANSFER (insufficient funds) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T16:00:38.584Z] TRANSFER (success) → 200 {"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"2025-06-04T10:00:38.569Z"}{"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"04/06/2025, 10:00:38 a.m."}
+[2025-06-04T16:00:38.585Z] ⚠️ Error al parsear JSON en transferencia exitosa: Unexpected non-whitespace character after JSON at position 115
+[2025-06-04T16:00:38.585Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T16:07:01.442Z] TRANSFER (invalid amount) → 400 {"message":"El monto debe ser un número válido."}
+[2025-06-04T16:07:01.445Z] TRANSFER (same account) → 400 {"message":"No puedes transferirte a tu propia cuenta."}
+[2025-06-04T16:07:01.447Z] TRANSFER (insufficient funds) → 400 {"message":"Fondos insuficientes."}
+[2025-06-04T16:07:01.468Z] TRANSFER (success) → 200 {"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"2025-06-04T10:07:01.449Z"}{"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"04/06/2025, 10:07:01 a.m."}
+[2025-06-04T16:07:01.468Z] ⚠️ Error al parsear JSON en transferencia exitosa: Unexpected non-whitespace character after JSON at position 115
+[2025-06-04T16:07:01.469Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
