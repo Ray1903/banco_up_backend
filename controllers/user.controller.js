@@ -11,20 +11,20 @@ exports.login = async (req, res) => {
     const usuario = await db.User.findOne({ where: { email } });
     if (!usuario) return res.status(401).json({ message: "Usuario no encontrado" });
 
-    if (usuario.bloqueado) return res.status(403).json({ message: "Usuario bloqueado" });
+    if (usuario.blocked) return res.status(403).json({ message: "Usuario bloqueado" });
 
     const passwordValid = await bcrypt.compare(password, usuario.password);
     if (!passwordValid) {
       const nuevos_intentos = (usuario.failedAttempts || 0) + 1;
-      const bloqueado = nuevos_intentos >= 3;
+      const blocked = nuevos_intentos >= 3;
 
       await usuario.update({
         failedAttempts: nuevos_intentos,
-        bloqueado
+        blocked
       });
 
-      const msg = bloqueado ? "Usuario bloqueado por múltiples intentos fallidos" : "Contraseña incorrecta";
-      const status = bloqueado ? 403 : 401
+      const msg = blocked ? "Usuario bloqueado por múltiples intentos fallidos" : "Contraseña incorrecta";
+      const status = blocked ? 403 : 401
 
       return res.status(status).json({ message: msg });
     };
@@ -134,7 +134,7 @@ exports.getUsersByBlockedStatus = async (req, res) => {
       include: [
         {
           model: db.Account,
-          as: 'account',            // ← Aquí debe coincidir EXACTO con el alias de models/index.js
+          as: 'account', 
           attributes: ['id', 'balance', 'active']
         }
       ]
