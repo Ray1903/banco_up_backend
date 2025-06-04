@@ -87,6 +87,14 @@ exports.transfer = async (req, res) => {
         date: localDate
       }, { transaction: t });
 
+      return res.status(200).json({
+        message: 'Transferencia completada con éxito.',
+        accountNumber: recipient.id,
+        amount: parsedAmount,
+        date: localDate.toISOString()  // 💥 usa un string válido
+      });
+
+
       // Puedes actualizar tablas de total diario aquí si ya las usas
     });
 
@@ -95,8 +103,16 @@ exports.transfer = async (req, res) => {
       message: 'Transferencia completada con éxito.',
       accountNumber: recipient.id,
       amount: parsedAmount,
-      date: localDate
+      date: new Date().toLocaleString('es-MX', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }),
     });
+
 
   } catch (error) {
     console.error('❌ Error al realizar la transferencia:', error);
