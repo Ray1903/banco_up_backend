@@ -1,3 +1,12 @@
 [2025-06-04T16:07:00.156Z] VALID TOKEN → usuario: {"id":1,"tipo":"normal"} status: 200
 [2025-06-04T16:07:00.163Z] NO TOKEN → status: 401 response: {"message":"Token no proporcionado"}
 [2025-06-04T16:07:00.172Z] INVALID TOKEN → status: 403 response: {"message":"Token inválido o expirado"}
+[2025-06-04T18:13:42.844Z] VALID TOKEN → usuario: {"id":1,"tipo":"normal"} status: 200
+[2025-06-04T18:13:42.847Z] NO TOKEN → status: 401 response: {"message":"Token no proporcionado"}
+[2025-06-04T18:13:42.856Z] INVALID TOKEN → status: 403 response: {"message":"Token inválido o expirado"}
+[2025-06-04T18:15:48.680Z] VALID TOKEN → usuario: {"id":1,"tipo":"normal"} status: 200
+[2025-06-04T18:15:48.695Z] NO TOKEN → status: 401 response: {"message":"Token no proporcionado"}
+[2025-06-04T18:15:48.706Z] INVALID TOKEN → status: 403 response: {"message":"Token inválido o expirado"}
+[2025-06-04T18:20:58.436Z] VALID TOKEN → usuario: {"id":1,"tipo":"normal"} status: 200
+[2025-06-04T18:20:58.450Z] NO TOKEN → status: 401 response: {"message":"Token no proporcionado"}
+[2025-06-04T18:20:58.463Z] INVALID TOKEN → status: 403 response: {"message":"Token inválido o expirado"}

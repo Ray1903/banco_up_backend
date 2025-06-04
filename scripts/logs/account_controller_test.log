@@ -52,3 +52,21 @@
 [2025-06-04T16:07:00.748Z] activateAccount FAIL -> status: 404 response: {"message":"Cuenta no encontrada"}
 [2025-06-04T16:07:00.749Z] deactivateAccount OK -> status: 200 response: {"message":"Cuenta desactivada"}
 [2025-06-04T16:07:00.750Z] deactivateAccount FAIL -> status: 404 response: {"message":"Cuenta no encontrada"}
+[2025-06-04T18:13:42.636Z] createAccount OK -> status: 201 response: {"message":"Account created successfully","account":{"id":10,"userID":1}}
+[2025-06-04T18:13:42.652Z] createAccount FAIL (ya existe) -> status: 400 response: {"message":"User already has an account."}
+[2025-06-04T18:13:42.654Z] activateAccount OK -> status: 200 response: {"message":"Account activated"}
+[2025-06-04T18:13:42.655Z] activateAccount FAIL -> status: 404 response: {"message":"Account not found"}
+[2025-06-04T18:13:42.657Z] deactivateAccount OK -> status: 200 response: {"message":"Account deactivated"}
+[2025-06-04T18:13:42.658Z] deactivateAccount FAIL -> status: 404 response: {"message":"Account not found"}
+[2025-06-04T18:15:49.376Z] createAccount OK -> status: 201 response: {"message":"Account created successfully","account":{"id":10,"userID":1}}
+[2025-06-04T18:15:49.382Z] createAccount FAIL (ya existe) -> status: 400 response: {"message":"User already has an account."}
+[2025-06-04T18:15:49.383Z] activateAccount OK -> status: 200 response: {"message":"Account activated"}
+[2025-06-04T18:15:49.384Z] activateAccount FAIL -> status: 404 response: {"message":"Account not found"}
+[2025-06-04T18:15:49.385Z] deactivateAccount OK -> status: 200 response: {"message":"Account deactivated"}
+[2025-06-04T18:15:49.386Z] deactivateAccount FAIL -> status: 404 response: {"message":"Account not found"}
+[2025-06-04T18:20:58.920Z] createAccount OK -> status: 201 response: {"message":"Account created successfully","account":{"id":10,"userID":1}}
+[2025-06-04T18:20:58.932Z] createAccount FAIL (ya existe) -> status: 400 response: {"message":"User already has an account."}
+[2025-06-04T18:20:58.933Z] activateAccount OK -> status: 200 response: {"message":"Account activated"}
+[2025-06-04T18:20:58.934Z] activateAccount FAIL -> status: 404 response: {"message":"Account not found"}
+[2025-06-04T18:20:58.935Z] deactivateAccount OK -> status: 200 response: {"message":"Account deactivated"}
+[2025-06-04T18:20:58.936Z] deactivateAccount FAIL -> status: 404 response: {"message":"Account not found"}

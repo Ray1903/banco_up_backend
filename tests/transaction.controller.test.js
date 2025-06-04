@@ -101,6 +101,14 @@ describe('Transaction Controller', () => {
     db.Transaction.create = jest.fn().mockResolvedValue({});
     db.sequelize.transaction = async (callback) => await callback({});
 
+    db.TotalSentPerDay.findOrCreate = jest.fn().mockResolvedValue([
+      { amount: 0, save: jest.fn() }, true
+    ]);
+    db.TotalReceivedPerDay.findOrCreate = jest.fn().mockResolvedValue([
+      { amount: 0, save: jest.fn() }, true
+    ]);
+
+
     await transfer(req, res);
 
     const status = res._getStatusCode();

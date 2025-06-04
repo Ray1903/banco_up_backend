@@ -12,3 +12,24 @@
 [2025-06-04T16:07:01.165Z] getUsersByBlockedStatus (blocked=0) → 200 {"usuarios":[{"id":1,"email":"a@a.com","blocked":false}]}
 [2025-06-04T16:07:01.165Z] unlockUser → 200 {"message":"Usuario desbloqueado exitosamente"}
 [2025-06-04T16:07:01.166Z] blockUser → 200 {"message":"Usuario bloqueado exitosamente."}
+[2025-06-04T18:13:43.294Z] insertUser → 201 {"message":"Usuario creado correctamente","user":{"id":1,"email":"testuser_1749060823293@example.com","type":"normal","failedAttempts":0}}
+[2025-06-04T18:13:43.295Z] login (correct) → 200 {"token":"mocked-token","usuario":1,"correo":"user@example.com"}
+[2025-06-04T18:13:43.296Z] login (incorrect) → 401 {"message":"Contraseña incorrecta"}
+[2025-06-04T18:13:43.297Z] getProfile → 200 {"id":1,"email":"mock@correo.com","account":{"id":2,"balance":1000}}
+[2025-06-04T18:13:43.297Z] getUsersByBlockedStatus (blocked=0) → 200 {"usuarios":[{"id":1,"email":"a@a.com","blocked":false}]}
+[2025-06-04T18:13:43.298Z] unlockUser → 200 {"message":"Usuario desbloqueado exitosamente"}
+[2025-06-04T18:13:43.298Z] blockUser → 200 {"message":"Usuario bloqueado exitosamente."}
+[2025-06-04T18:15:49.385Z] insertUser → 201 {"message":"Usuario creado correctamente","user":{"id":1,"email":"testuser_1749060949383@example.com","type":"normal","failedAttempts":0}}
+[2025-06-04T18:15:49.396Z] login (correct) → 200 {"token":"mocked-token","usuario":1,"correo":"user@example.com"}
+[2025-06-04T18:15:49.397Z] login (incorrect) → 401 {"message":"Contraseña incorrecta"}
+[2025-06-04T18:15:49.398Z] getProfile → 200 {"id":1,"email":"mock@correo.com","account":{"id":2,"balance":1000}}
+[2025-06-04T18:15:49.399Z] getUsersByBlockedStatus (blocked=0) → 200 {"usuarios":[{"id":1,"email":"a@a.com","blocked":false}]}
+[2025-06-04T18:15:49.400Z] unlockUser → 200 {"message":"Usuario desbloqueado exitosamente"}
+[2025-06-04T18:15:49.402Z] blockUser → 200 {"message":"Usuario bloqueado exitosamente."}
+[2025-06-04T18:20:59.122Z] insertUser → 201 {"message":"Usuario creado correctamente","user":{"id":1,"email":"testuser_1749061259121@example.com","type":"normal","failedAttempts":0}}
+[2025-06-04T18:20:59.134Z] login (correct) → 200 {"token":"mocked-token","usuario":1,"correo":"user@example.com"}
+[2025-06-04T18:20:59.136Z] login (incorrect) → 401 {"message":"Contraseña incorrecta"}
+[2025-06-04T18:20:59.137Z] getProfile → 200 {"id":1,"email":"mock@correo.com","account":{"id":2,"balance":1000}}
+[2025-06-04T18:20:59.138Z] getUsersByBlockedStatus (blocked=0) → 200 {"usuarios":[{"id":1,"email":"a@a.com","blocked":false}]}
+[2025-06-04T18:20:59.139Z] unlockUser → 200 {"message":"Usuario desbloqueado exitosamente"}
+[2025-06-04T18:20:59.141Z] blockUser → 200 {"message":"Usuario bloqueado exitosamente."}

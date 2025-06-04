@@ -30,7 +30,7 @@ describe('Account Controller', () => {
     log('createAccount OK -> status:', status, 'response:', data);
 
     expect(status).toBe(201);
-    expect(data).toHaveProperty('message', 'Cuenta creada exitosamente');
+    expect(data).toHaveProperty('message', 'Account created successfully');
   });
 
   it('❌ should return 400 if account already exists', async () => {
@@ -47,7 +47,7 @@ describe('Account Controller', () => {
     log('createAccount FAIL (ya existe) -> status:', status, 'response:', data);
 
     expect(status).toBe(400);
-    expect(data).toHaveProperty('message', 'El usuario ya tiene una cuenta.');
+    expect(data).toHaveProperty('message', 'User already has an account.');
   });
 
   it('🟢 should activate an existing account', async () => {
@@ -66,7 +66,7 @@ describe('Account Controller', () => {
 
     expect(mockAccount.update).toHaveBeenCalledWith({ active: true });
     expect(status).toBe(200);
-    expect(data).toHaveProperty('message', 'Cuenta activada');
+    expect(data).toHaveProperty('message', 'Account activated');
   });
 
   it('❌ should return 404 if account not found (activation)', async () => {
@@ -83,7 +83,7 @@ describe('Account Controller', () => {
     log('activateAccount FAIL -> status:', status, 'response:', data);
 
     expect(status).toBe(404);
-    expect(data).toHaveProperty('message', 'Cuenta no encontrada');
+    expect(data).toHaveProperty('message', 'Account not found');
   });
 
   it('🔻 should deactivate an existing account', async () => {
@@ -102,7 +102,7 @@ describe('Account Controller', () => {
 
     expect(mockAccount.update).toHaveBeenCalledWith({ active: false });
     expect(status).toBe(200);
-    expect(data).toHaveProperty('message', 'Cuenta desactivada');
+    expect(data).toHaveProperty('message', 'Account deactivated');
   });
 
   it('❌ should return 404 if account not found (deactivation)', async () => {
@@ -119,6 +119,6 @@ describe('Account Controller', () => {
     log('deactivateAccount FAIL -> status:', status, 'response:', data);
 
     expect(status).toBe(404);
-    expect(data).toHaveProperty('message', 'Cuenta no encontrada');
+    expect(data).toHaveProperty('message', 'Account not found');
   });
 });

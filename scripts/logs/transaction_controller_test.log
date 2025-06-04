@@ -34,3 +34,18 @@
 [2025-06-04T16:07:01.468Z] TRANSFER (success) → 200 {"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"2025-06-04T10:07:01.449Z"}{"message":"Transferencia completada con éxito.","accountNumber":2,"amount":1000,"date":"04/06/2025, 10:07:01 a.m."}
 [2025-06-04T16:07:01.468Z] ⚠️ Error al parsear JSON en transferencia exitosa: Unexpected non-whitespace character after JSON at position 115
 [2025-06-04T16:07:01.469Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T18:13:43.588Z] TRANSFER (invalid amount) → 400 {"message":"Amount must be a valid number."}
+[2025-06-04T18:13:43.589Z] TRANSFER (same account) → 400 {"message":"Cannot transfer to your own account."}
+[2025-06-04T18:13:43.590Z] TRANSFER (insufficient funds) → 400 {"message":"Insufficient funds."}
+[2025-06-04T18:13:43.596Z] TRANSFER (success) → 500 {"message":"Server error during transfer."}
+[2025-06-04T18:13:43.597Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T18:15:49.267Z] TRANSFER (invalid amount) → 400 {"message":"Amount must be a valid number."}
+[2025-06-04T18:15:49.278Z] TRANSFER (same account) → 400 {"message":"Cannot transfer to your own account."}
+[2025-06-04T18:15:49.279Z] TRANSFER (insufficient funds) → 400 {"message":"Insufficient funds."}
+[2025-06-04T18:15:49.293Z] TRANSFER (success) → 500 {"message":"Server error during transfer."}
+[2025-06-04T18:15:49.297Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
+[2025-06-04T18:20:59.172Z] TRANSFER (invalid amount) → 400 {"message":"Amount must be a valid number."}
+[2025-06-04T18:20:59.179Z] TRANSFER (same account) → 400 {"message":"Cannot transfer to your own account."}
+[2025-06-04T18:20:59.180Z] TRANSFER (insufficient funds) → 400 {"message":"Insufficient funds."}
+[2025-06-04T18:20:59.181Z] TRANSFER (success) → 200 {"message":"Transfer completed successfully.","accountNumber":2,"amount":1000,"date":"2025-06-04T12:20:59.181Z"}
+[2025-06-04T18:20:59.183Z] GET TRANSACTIONS → 200 [{"id":1,"amount":500,"senderID":1},{"id":2,"amount":200,"receiverID":1}]
